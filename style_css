@@ -1,0 +1,345 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Consolas, monospace;
+}
+
+body{
+    background:#000;
+    color:#fff;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    position:relative;
+}
+
+/* Moving Background */
+body::before{
+    content:"";
+    position:fixed;
+    inset:-50%;
+    background:
+    radial-gradient(circle,#222 0%,transparent 25%),
+    radial-gradient(circle,#111 0%,transparent 20%);
+    background-size:250px 250px;
+    animation:bgmove 25s linear infinite;
+    opacity:.35;
+}
+
+@keyframes bgmove{
+    from{transform:translate(0,0);}
+    to{transform:translate(250px,250px);}
+}
+
+/* CRT Scanlines */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:repeating-linear-gradient(
+        transparent 0px,
+        transparent 3px,
+        rgba(255,255,255,.03) 4px
+    );
+    animation:scan 7s linear infinite;
+    pointer-events:none;
+}
+
+@keyframes scan{
+    from{transform:translateY(-100%);}
+    to{transform:translateY(100%);}
+}
+
+/* Login Box */
+.login-box{
+
+    width:430px;
+    padding:45px;
+
+    background:rgba(0,0,0,.75);
+
+    border:2px solid white;
+
+    text-align:center;
+
+    backdrop-filter:blur(8px);
+
+    box-shadow:
+    0 0 15px white,
+    0 0 40px white;
+
+    animation:
+    pulse 2.5s infinite alternate,
+    floatBox 5s ease-in-out infinite;
+
+    z-index:10;
+
+}
+
+@keyframes pulse{
+    from{
+        box-shadow:0 0 10px white;
+    }
+
+    to{
+        box-shadow:
+        0 0 20px white,
+        0 0 50px white;
+    }
+}
+
+@keyframes floatBox{
+    0%,100%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+h1{
+
+    font-size:35px;
+
+    letter-spacing:5px;
+
+    margin-bottom:30px;
+
+    animation:flicker 2s infinite;
+
+}
+
+@keyframes flicker{
+
+    0%,18%,22%,25%,53%,57%,100%{
+        opacity:1;
+        text-shadow:
+        0 0 10px white,
+        0 0 25px white,
+        0 0 45px white;
+    }
+
+    20%,24%,55%{
+        opacity:.3;
+    }
+
+}
+
+.question{
+
+    font-size:22px;
+
+    margin-bottom:35px;
+
+    animation:fade 2s infinite;
+
+}
+
+@keyframes fade{
+
+    0%,100%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:.6;
+    }
+
+}
+
+.buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+}
+
+button{
+
+    color:white;
+
+    background:black;
+
+    border:2px solid white;
+
+    padding:12px 35px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    transition:.3s;
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+button::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:-120%;
+
+    top:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.7),
+        transparent
+    );
+
+    transition:.6s;
+
+}
+
+button:hover::before{
+
+    left:120%;
+
+}
+
+button:hover{
+
+    background:white;
+
+    color:black;
+
+    transform:scale(1.08);
+
+    box-shadow:
+    0 0 15px white,
+    0 0 40px white;
+
+}
+
+/* Falling Text */
+
+.falling{
+
+    position:absolute;
+
+    top:-120px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-size:45px;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+    text-shadow:
+    0 0 10px white,
+    0 0 25px white,
+    0 0 50px white;
+
+    animation:drop 3.5s linear forwards;
+
+}
+
+@keyframes drop{
+
+    0%{
+
+        top:-120px;
+
+        opacity:0;
+
+        transform:
+        translateX(-50%)
+        scale(.7)
+        rotate(-8deg);
+
+    }
+
+    20%{
+
+        opacity:1;
+
+    }
+
+    50%{
+
+        transform:
+        translateX(-50%)
+        scale(1.15)
+        rotate(8deg);
+
+    }
+
+    100%{
+
+        top:110%;
+
+        opacity:0;
+
+        transform:
+        translateX(-50%)
+        scale(1)
+        rotate(0deg);
+
+    }
+
+}
+
+/* Floating Particles */
+
+.particle{
+
+    position:absolute;
+
+    width:3px;
+
+    height:3px;
+
+    background:white;
+
+    border-radius:50%;
+
+    animation:particle linear infinite;
+
+}
+
+@keyframes particle{
+
+    from{
+
+        transform:translateY(100vh);
+
+        opacity:0;
+
+    }
+
+    15%{
+
+        opacity:1;
+
+    }
+
+    to{
+
+        transform:translateY(-120vh);
+
+        opacity:0;
+
+    }
+
+}
