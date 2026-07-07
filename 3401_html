@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3401 Loading Screen</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#000;
+    color:#fff;
+    overflow:hidden;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Shiny animated background */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.08), transparent 20%),
+    radial-gradient(circle at 80% 50%, rgba(0,255,255,.08), transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(255,255,255,.05), transparent 25%);
+    animation:shine 8s linear infinite alternate;
+    pointer-events:none;
+}
+
+@keyframes shine{
+    from{
+        transform:translate(-30px,-20px) scale(1);
+    }
+    to{
+        transform:translate(30px,20px) scale(1.2);
+    }
+}
+
+.container{
+    position:relative;
+    text-align:center;
+    width:90%;
+    max-width:700px;
+    z-index:2;
+}
+
+.loading{
+    width:350px;
+    height:18px;
+    border:2px solid white;
+    border-radius:20px;
+    overflow:hidden;
+    margin:20px auto;
+}
+
+.bar{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#00ffff,#ffffff,#00ffff);
+    animation:load 3s forwards;
+}
+
+@keyframes load{
+    to{
+        width:100%;
+    }
+}
+
+.screen{
+    display:none;
+    animation:fade .5s;
+}
+
+.active{
+    display:block;
+}
+
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+button{
+    margin:10px;
+    padding:12px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#111;
+    color:white;
+    box-shadow:0 0 15px cyan;
+    transition:.25s;
+}
+
+button:hover{
+    background:#00bcd4;
+    transform:scale(1.08);
+}
+
+.falling{
+    position:absolute;
+    top:-120px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:38px;
+    font-weight:bold;
+    color:#00ffff;
+    text-shadow:0 0 18px cyan;
+    white-space:nowrap;
+    animation:fall 4s ease forwards,jiggle .18s infinite;
+}
+
+@keyframes fall{
+    to{
+        top:75%;
+    }
+}
+
+@keyframes jiggle{
+    0%{
+        transform:translateX(-50%) rotate(-3deg);
+    }
+    50%{
+        transform:translateX(-50%) rotate(3deg);
+    }
+    100%{
+        transform:translateX(-50%) rotate(-3deg);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Loading Screen -->
+    <div id="loading" class="active">
+        <h1>Initializing...</h1>
+
+        <div class="loading">
+            <div class="bar"></div>
+        </div>
+    </div>
+
+    <!-- Main Question -->
+    <div id="main" class="screen">
+        <h2>Are you from 3401?</h2>
+
+        <button onclick="showScreen('poppy')">Yes</button>
+        <button onclick="showScreen('holga')">Yes</button>
+    </div>
+
+    <!-- Poppy Path -->
+    <div id="poppy" class="screen">
+        <h2>Okay now do you know who is Poppy?</h2>
+
+        <button onclick="dropText('Lets Dance Baby!')">Yes</button>
+        <button onclick="dropText('Welcome to 3401 Mr or Mrs Spy.')">No</button>
+        <button onclick="restartGame()">Try Again</button>
+    </div>
+
+    <!-- Holga Path -->
+    <div id="holga" class="screen">
+        <h2>Do you know who is Holga?</h2>
+
+        <button onclick="dropText('Good Boy.')">Yes</button>
+        <button onclick="showScreen('nightmare')">No</button>
+    </div>
+
+    <!-- Nightmare Question -->
+    <div id="nightmare" class="screen">
+        <h2>Okay do you have any interest on Joining [NGT] Nightmare?</h2>
+
+        <button onclick="dropText('Good Boy/Girl, now contact our R5/R4 for more infos.')">Yes</button>
+        <button onclick="dropText('Good Boy/Girl, now contact our R5/R4 for more infos.')">Yes</button>
+    </div>
+
+</div>
+
+<script>
+
+// Show the first question after the loading bar finishes.
+setTimeout(() => {
+    document.getElementById("loading").style.display = "none";
+    showScreen("main");
+}, 3000);
+
+// Display a specific screen.
+function showScreen(id){
+    document.querySelectorAll(".screen").forEach(screen=>{
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+}
+
+// Return to the beginning.
+function restartGame(){
+    showScreen("main");
+}
+
+// Falling animated text.
+function dropText(message){
+
+    const text=document.createElement("div");
+    text.className="falling";
+    text.innerText=message;
+
+    document.body.appendChild(text);
+
+    setTimeout(()=>{
+        text.remove();
+    },4000);
+}
+
+</script>
+
+</body>
+</html>
